@@ -1,1 +1,33 @@
+version: '3.3'
 
+services:
+   db:
+     image: omprakash123456/mysql5.7:kkdev #mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: m2kk
+       MYSQL_USER: m2kk
+       MYSQL_PASSWORD: m2kk
+
+   magento2:
+     depends_on:
+       - db
+     image: omprakash123456/magento:kkdev #ubuntu/nginx
+     ports:
+       - "8007:80"
+       - "8008:8008"
+       - "4433:443"
+       - "8080:8080"
+       - "9200:9200"
+     restart: always
+     environment:
+       MAGENTO_DB_HOST: db:3306
+       MAGENTO_DB_USER: m2kk
+       MAGENTO_DB_PASSWORD: m2kk
+       MAGENTO_DB_NAME: m2kk
+
+volumes:
+   db_data: {}
